@@ -4,28 +4,28 @@
 #include<Arduino.h>
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
-#include <string>
+// #include <string>
 
 using namespace std;
 
 class PROXY_CLIENT : public WiFiClient{
 private:
-    string network_ssid;
-    string network_password;
-    string proxy_host;
+    String network_ssid;
+    String network_password;
+    String proxy_host;
     uint16_t proxy_port;
-    string proxy_username;
-    string proxy_password;
+    String proxy_username;
+    String proxy_password;
 
     PROXY_CLIENT(){}
 
     PROXY_CLIENT(
-                string network_ssid,
-                string network_password,
-                string proxy_host,
+                String network_ssid,
+                String network_password,
+                String proxy_host,
                 uint16_t proxy_port,
-                string proxy_username,
-                string proxy_password){
+                String proxy_username,
+                String proxy_password){
         this->network_ssid=network_ssid;
         this->network_password=network_password;
         this->proxy_host=proxy_host;
@@ -46,13 +46,13 @@ public:
         // Serial.println("Connected to proxy!");
         return instance;
     }
-    static void init_and_get_instance(
-            string network_ssid,
-            string network_password,
-            string proxy_host,
+    static PROXY_CLIENT* init_and_get_instance(
+            String network_ssid,
+            String network_password,
+            String proxy_host,
             uint16_t proxy_port,
-            string proxy_username,
-            string proxy_password) {
+            String proxy_username,
+            String proxy_password) {
         if(!instance)
             instance=new PROXY_CLIENT();
         instance->network_ssid=network_ssid;
@@ -62,7 +62,7 @@ public:
         instance->proxy_username=proxy_username;    
         instance->proxy_password=proxy_password;
         
-        if (!instance->connect(instance->proxy_host, instance->proxy_port)) {
+        if (!instance->connect(instance->proxy_host.c_str(), instance->proxy_port)) {
             Serial.println("Connection to proxy failed!");
             return nullptr;
         }
@@ -70,17 +70,17 @@ public:
         return instance;
     }
 
-    string get_proxy_host(){
-        return instance->proxy_host;
+    String get_proxy_host(){
+        return proxy_host;
     }
     uint16_t get_proxy_port(){
-        return instance->proxy_port;
+        return proxy_port;
     }
-    string get_proxy_username(){
-        return instance->proxy_username;
+    String get_proxy_username(){
+        return proxy_username;
     }
-    string get_proxy_password(){
-        return instance->proxy_password;
+    String get_proxy_password(){
+        return proxy_password;
     }
 };
 
