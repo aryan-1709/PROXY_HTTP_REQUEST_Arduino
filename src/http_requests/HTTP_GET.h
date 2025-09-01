@@ -2,16 +2,16 @@
 #define HTTP_GET_H
 
 #include<Arduino.h>
-#include<HTTP_Request.h>
-#include<../ProxyClient.h>
+#include<http_requests/HTTP_Request.h>
+#include<ProxyClient.h>
 #include<utility/Base64.h>
 
 using namespace std;
 
-class http_post_request : public http_request {
+class http_get_request : public http_request {
 private:
 public:
-    http_post_request(String  target_host, String target_path) : http_request(target_host, target_path){
+    http_get_request(String  target_host, String target_path) : http_request(target_host, target_path){
         //Do Nothing
     }
 

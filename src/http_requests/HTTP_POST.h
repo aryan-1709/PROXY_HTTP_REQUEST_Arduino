@@ -1,10 +1,10 @@
-#ifndef HTTP_POST_REQUEST_HPP
-#define HTTP_POST_REQUEST_HPP
+#ifndef HTTP_POST_REQUEST_H
+#define HTTP_POST_REQUEST_H
 
 // #include<string>
 #include<Arduino.h>
-#include<HTTP_Request.h>
-#include<../ProxyClient.h>
+#include<http_requests/HTTP_Request.h>
+#include <ProxyClient.h>
 #include<utility/Base64.h>
 
 using namespace std;
