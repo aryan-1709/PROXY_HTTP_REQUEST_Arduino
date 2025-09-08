@@ -33,7 +33,7 @@ public:
         this->target_host = target_host;
     }
 
-    virtual String get_request(){};
+    virtual String get_request(String username, String password){};
 };
 
 #endif
