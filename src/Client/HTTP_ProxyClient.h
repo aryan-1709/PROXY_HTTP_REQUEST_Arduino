@@ -3,6 +3,7 @@
 
 #include<Client/Client.h>
 #include<WifiClient.h>
+#include<structures/Response.h>
 
 class Proxy_Client : public http_client, public WiFiClient {
 protected:
@@ -13,23 +14,24 @@ public:
         this->username=username;
         this->password=password;
     }
-    void _connect_() override{
+    bool _connect_() override{
         if (!this->connected()) {
-            Serial.println("Proxy not connected, reconnecting...");
+            // Serial.println("Proxy not connected, reconnecting...");
             if (!this->connect(this->host.c_str(), this->port)) {
                 Serial.println("Reconnection failed!");
-                return;
+                return false;
             }
-            Serial.println("Reconnected to proxy!");
+            // Serial.println("Reconnected to proxy!");
+            return true;
         }
     }
 
-    String _print_(String request) override{
+    Response _print_(String request) override{
         this->setTimeout(10000);
-
+        Response res;
         // Send the HTTP request
         this->print(request);
-        Serial.print("Request sent. Awaiting response");
+        Serial.print("Request sent.");
 
         bool responseStarted = false;
         bool InsideBody=false;
@@ -79,13 +81,17 @@ public:
         if (!responseStarted) {
             Serial.println(); // Add a newline after the final dot
             Serial.println("Timeout: Can't reach the server or no response received in 30 seconds.");
-            return "No reponse received!";
+            res.first=false;
+            res.second="No reponse received!";
+            return res;
         }
         if (this->connected()) {
             this->stop();
         }
-        Serial.println("Connection closed.");
-        return response;
+        // Serial.println("Connection closed.");
+        res.first=true;
+        res.second=response;
+        return res;
     }
 };
 

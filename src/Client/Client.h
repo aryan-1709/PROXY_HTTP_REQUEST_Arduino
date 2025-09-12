@@ -2,6 +2,7 @@
 #define CLIENT_H 
 
 #include<Arduino.h>
+#include<structures/Response.h>
 
 class http_client{
 protected:
@@ -13,9 +14,9 @@ public:
         this->port=port;
     }
 
-    virtual void _connect_()=0;
+    virtual bool _connect_()=0;
 
-    virtual String _print_(String request)=0;
+    virtual Response _print_(String request)=0;
 };
 
 #endif

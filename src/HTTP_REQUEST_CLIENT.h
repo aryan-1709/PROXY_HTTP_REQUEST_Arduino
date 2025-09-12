@@ -9,6 +9,7 @@
 #include<Client/Client.h>
 #include<Client/HTTP_NormalClient.h>
 #include<Client/HTTP_ProxyClient.h>
+#include<structures/Response.h>
 
 using namespace std;
 
@@ -75,7 +76,8 @@ public:
         make_http_request_ = new make_http_request(client, proxy_username, proxy_password);
         return;
     }
-    String make_request(String target_host, String target_path, String jsonData){
+    Response make_request(String target_host, String target_path, String jsonData){
+        Response response;
         this->target_host=target_host;
         this->target_path=target_path;
         this->jsonData=jsonData;
@@ -83,12 +85,14 @@ public:
             http_request_=new http_post_request(this->jsonData, this->target_host, this->target_path);
         else    http_request_=new http_get_request(this->target_host, this->target_path);
         if(!client || !http_request_){
-            Serial.println("Error finding proxy_client/http_request_ please follow the original order!");
-            return "Something went wrong!";
+            // Serial.println("Error finding proxy_client/http_request_ please follow the original order!");
+            response.first=false;
+            response.second="Something went wrong!";
+            return response;
         }
-        String response = make_http_request_->make_request(http_request_);
-        Serial.print("Response received request sent!");
-        Serial.print(response);
+        response = make_http_request_->make_request(http_request_);
+        // Serial.print("Response received request sent!");
+        // Serial.print(response);
         this->jsonData="";
         return response;
     }
